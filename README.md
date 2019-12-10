@@ -1,4 +1,4 @@
-# clipboard sharing under restriction one-way
+# one-way clipboard sharing under restriction
 
 ## use case
 assume your are working with 2 different computers in 2 different networks with one has root permissions and the other one is restricted as much as possible, like you **aren't** able:
