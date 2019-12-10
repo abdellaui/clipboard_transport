@@ -3,18 +3,18 @@
 ## use case
 assume your are working with 2 different computers in 2 different networks with one has root permissions and the other one is restricted as much as possible, like you **aren't** able:
 - to install your own applications
-- to visit websites for sharing content platforms
+- to visit websites for sharing content
 - to visit websites urls which tunnels to your localhost via e.g. `ngrok`
 
-in adition, you aren't able to configure your router to accept trafic from outsite. you only want to share your clipboard from high privileged computer to low privileged computer.
+in adition, you aren't able to configure your router to accept trafic from outsite. beside that, you only want to share your clipboard in one-way from high privileged computer to low privileged computer.
 
-in such a confusing situation you can use this script.
+in such a confusing situation this script will make your day.
 
 ## how it works
 - a c++ application based on `Qt` will watch your clipboard
-- a clipboard can hold 3 types of data: `image, html, text`
-- the c++ application will render predefined templates on clipboard change depending on the data type
-- the output will be exposed via simple http server to your localhost on port `8082`
+- a clipboard can hold 3 types of data. this are: `image, html, text`
+- the c++ application will render predefined templates on clipboard change depending on the data type. difined in: `./assets/in/*`
+- the output will be exposed via simple http server to your localhost on port `8082`.
 - over `ssh.localhost.run` your localhost will be ssh tunneled to outsite with a generic url, so you will be able to connect with your second computer over this url
 
 ## usage
