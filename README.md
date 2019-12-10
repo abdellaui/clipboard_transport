@@ -24,13 +24,15 @@ just run:
 `./run.sh`
 
 **for restricted computer:**
-open the url given by `./run.sh`. for now, you need to refresh via `F5 / ctrl+R` manually.
+open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+R` manually.~~ it will refresh automatically, if it detects changes _(checks every 1 second)_
 
 **information:** limitation on macOS: you need to put the application `clipboard_transport` to the foreground. more information click [here](https://doc.qt.io/qt-5/qclipboard.html#dataChanged).
 
 **todos:**
+- [ ] automatically copying in clipboard via browser
 - [ ] add binaries for linux
 - [ ] image: support different image formats (works only with png now)
+- [x] auto reload 
 - [x] add codemirror to data type `text`
 - [x] add galery template for data type `image`
 - [x] add download button for data type `image`

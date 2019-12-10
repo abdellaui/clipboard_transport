@@ -45,15 +45,39 @@
         <textarea id="codeMirror">$data</textarea>
     </div>
     <script>
-        CodeMirror.fromTextArea(document.getElementById("codeMirror"),
-            {
-                lineNumbers: true,
-                mode: "htmlmixed",
-                tabSize: 4,
-                indentWithTabs: true,
-                autofocus: true
+        var remember = "";
+        var interval = undefined;
+        var check = function (data) {
+            if (remember != "" && data != remember) {
+                window.clearInterval(interval);
+                window.location.reload();
             }
-        );
+            remember = data;
+        };
+
+        var getdata = function () {
+            fetch(window.location.href, { mode: 'cors' }).then(data => {
+                data.text().then(text => {
+                    check(text)
+                });
+
+            }).catch(e => {
+                console.log(e);
+            });
+        };
+
+        (function () {
+            interval = window.setInterval(getdata, 1000);
+            CodeMirror.fromTextArea(document.getElementById("codeMirror"),
+                {
+                    lineNumbers: true,
+                    mode: "htmlmixed",
+                    tabSize: 4,
+                    indentWithTabs: true,
+                    autofocus: true
+                }
+            );
+        })();
     </script>
 </body>
 
