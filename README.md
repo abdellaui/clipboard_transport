@@ -18,10 +18,11 @@ in such a confusing situation this script will make your day.
 - over `ssh.localhost.run` your localhost will be ssh tunneled to outsite with a generic url, so you will be able to connect with your second computer over this url
 
 ## usage
+**first of all:**
+change in `./run.sh` your `OS_NAME=linux # supported: macos, linux`.
+
 **for privileged computer:**
 just run: 
-
-`./run.sh`
 
 **for restricted computer:**
 open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+R` manually.~~ it will refresh automatically, if it detects changes _(checks every 1 second)_

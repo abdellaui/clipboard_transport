@@ -63,6 +63,8 @@ const QString ClipboardManager::encodeBase64Image(const QVariant image) const
 
 void ClipboardManager::renderOutput(const ClipboardDataType mode, const QString data) const
 {
+    qInfo() << m_map[mode];
+
     QString outputFile = m_outputFile + "/index.html";
     QString inputFile = m_inputFile + "/" + m_map[mode];
     KeyValuePairs* subsitutionMap = new KeyValuePairs
@@ -82,7 +84,7 @@ void ClipboardManager::renderOutput(const ClipboardDataType mode, const QString 
 
 
 const QString ClipboardManager::substituteTemplate(const QString path, const KeyValuePairs& subsitution) const
-{
+{ 
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return "";
