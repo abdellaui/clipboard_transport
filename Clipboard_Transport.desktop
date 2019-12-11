@@ -1,0 +1,8 @@
+[Desktop Entry]
+Terminal=false
+Type=Application
+Version=1.0
+Encoding=UTF-8
+Name=ClipboardTransport
+Comment=ClipboardTransport
+Exec=/home/dwp7111/clipboard_transport/run.sh %F

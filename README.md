@@ -25,10 +25,24 @@ change in `./run.sh` your `OS_NAME=linux # supported: macos, linux`.
 just run: 
 
 **for restricted computer:**
-open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+R` manually.~~ it will refresh automatically, if it detects changes _(checks every 1 second)_
+open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+R` manually.~~ it will refresh automatically, if it detects changes _(checks every 0.5 second)_
 
 **information:** limitation on macOS: you need to put the application `clipboard_transport` to the foreground. more information click [here](https://doc.qt.io/qt-5/qclipboard.html#dataChanged).
+## special information:
 
+under **linux** you can have an application for adding to the favorits by running:
+
+**please update the last line of `./Clipboard_Transport.desktop`**
+```
+sudo mv ./Clipboard_Transport.desktop ~/.local/share/applications/
+sudo update-desktop-database
+```
+
+under **unix** based systems you can add it to your binaries by running:
+
+```
+ln -s ~/clipboard_transport/run.sh /usr/local/bin/clipboard_transport -f
+```
 **todos:**
 - [ ] automatically copying in clipboard via browser
 - [x] add binaries for linux
