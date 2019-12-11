@@ -19,10 +19,28 @@ ClipboardManager::ClipboardManager(const QClipboard *cb,
   }
 
   m_map = QMap<ClipboardDataType, QString>{
-      {ClipboardDataType::IMAGE, "image.html"},
-      {ClipboardDataType::HTML, "html.html"},
-      {ClipboardDataType::TEXT, "text.html"},
+      {ClipboardDataType::IMAGE, readFileAll(m_inputFile + "/image.html")},
+      {ClipboardDataType::HTML, readFileAll(m_inputFile + "/html.html")},
+      {ClipboardDataType::TEXT, readFileAll(m_inputFile + "/text.html")},
   };
+}
+
+QString ClipboardManager::writeIntoFile(const QString &path,
+                                        const QString &data) const {
+  QFile file(path);
+  if (file.open(QIODevice::WriteOnly)) {
+    QTextStream fout(&file);
+    fout << data;
+  } else {
+    qInfo() << "couldnt save file: " << path;
+  }
+  file.close();
+}
+
+QString ClipboardManager::readFileAll(const QString &path) const {
+  QFile file(path);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return "";
+  return QString(file.readAll());
 }
 
 QString ClipboardManager::morphFile(QString path) const {
@@ -69,30 +87,23 @@ const QString ClipboardManager::storeImage(const QMimeData *mimeData) const {
 
 void ClipboardManager::renderOutput(const ClipboardDataType &mode,
                                     const QString &data) const {
-  qInfo() << "Rendered from: " << m_map[mode];
+  QString timestamp = QString::number(QDateTime::currentSecsSinceEpoch());
 
-  QString outputFile = m_outputFile + "/index.html";
-  QString inputFile = m_inputFile + "/" + m_map[mode];
-  KeyValuePairs *subsitutionMap = new KeyValuePairs{{"$data", data}};
+  KeyValuePairs *subsitutionMap =
+      new KeyValuePairs{{"$data", data}, {"$time", timestamp}};
 
-  QFile file(outputFile);
-  if (file.open(QIODevice::WriteOnly)) {
-    QTextStream fout(&file);
-    fout << substituteTemplate(inputFile, subsitutionMap);
-  }
-  file.close();
+  writeIntoFile(m_outputFile + "/index.html",
+                substituteTemplate(mode, subsitutionMap));
+  writeIntoFile(m_outputFile + "time.txt", timestamp);
 }
 
 const QString ClipboardManager::substituteTemplate(
-    const QString &path, const KeyValuePairs *subsitution) const {
-  QFile file(path);
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return "";
-
-  QString templateString(file.readAll());
+    const ClipboardDataType &mode, const KeyValuePairs *subsitution) const {
+  QString templateString = m_map[mode];
 
   for (const auto &item : *subsitution) {
     templateString.replace(item.first, item.second);
   }
-  file.close();
+
   return templateString;
 }

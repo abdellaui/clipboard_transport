@@ -49,19 +49,18 @@
         <textarea id="codeMirror">$data</textarea>
     </div>
     <script>
-        var remember = "";
+        var remember = "$time";
         var interval = undefined;
         var check = function (data) {
-            if (remember != "" && data != remember) {
+            if (data != remember) {
                 window.clearInterval(interval);
                 window.location.reload();
             }
-            remember = data;
         };
 
         var getdata = function () {
             // avoid caching
-            var url = window.location.protocol + "//" + window.location.hostname + "/?time=" + Date.now();
+            var url = window.location.protocol + "//" + window.location.hostname + "/time.txt?time=" + Date.now();
             fetch(url, { mode: 'cors' }).then(data => {
                 data.text().then(text => {
                     check(text)
