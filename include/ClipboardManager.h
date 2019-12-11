@@ -25,10 +25,10 @@ class ClipboardManager : public QObject {
   QMap<ClipboardDataType, QString> m_map;
 
   QString morphFile(QString) const;
-  QString writeIntoFile(const QString &, const QString &) const;
+  void writeIntoFile(const QString &, const QString &) const;
   QString readFileAll(const QString &) const;
-  const QString storeImage(const QMimeData *) const;
+  const QString storeImage(const QStringList, const QVariant) const;
   void renderOutput(const ClipboardDataType &, const QString &) const;
   const QString substituteTemplate(const ClipboardDataType &,
-                                   const KeyValuePairs *) const;
+                                   const KeyValuePairs &) const;
 };

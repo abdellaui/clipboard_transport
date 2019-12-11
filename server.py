@@ -8,5 +8,8 @@ class CORSRequestHandler (SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Authorization, Cache-Control, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
         SimpleHTTPRequestHandler.end_headers(self)
 
+    def log_message(self, format, *args):
+        return
+
 if __name__ == '__main__':
     test(CORSRequestHandler, HTTPServer, port=int(sys.argv[1]) if len(sys.argv) > 1 else 8000)

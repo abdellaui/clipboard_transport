@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>clipboard transport</title>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.css">
     <style>
         html,
         body {
@@ -16,6 +18,18 @@
 
         img {
             max-width: 100%;
+            height: auto;
+        }
+
+        textarea#codeMirror {
+            min-width: 100%;
+            width: 100%;
+            min-height: 1000px;
+            height: 100%;
+        }
+
+        .CodeMirror {
+            border: 1px solid #eee;
             height: auto;
         }
 
@@ -32,26 +46,21 @@
 
 <body>
     <div class="content">
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
-<html><head><meta name="qrichtext" content="1" /><style type="text/css">
-p, li { white-space: pre-wrap; }
-</style></head><body>
-<pre style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><!--StartFragment-->m_outputFile<!--EndFragment--></pre></body></html>
+        <textarea id="codeMirror"></textarea>
     </div>
     <script>
-        var remember = "";
+        var remember = "1576073695";
         var interval = undefined;
         var check = function (data) {
-            if (remember != "" && data != remember) {
+            if (data != remember) {
                 window.clearInterval(interval);
                 window.location.reload();
             }
-            remember = data;
         };
 
         var getdata = function () {
             // avoid caching
-            var url = window.location.protocol + "//" + window.location.hostname + "/?time=" + Date.now();
+            var url = window.location.protocol + "//" + window.location.hostname + "/time.txt?time=" + Date.now();
             fetch(url, { mode: 'cors' }).then(data => {
                 data.text().then(text => {
                     check(text)
@@ -64,6 +73,15 @@ p, li { white-space: pre-wrap; }
 
         (function () {
             interval = window.setInterval(getdata, 1000);
+            CodeMirror.fromTextArea(document.getElementById("codeMirror"),
+                {
+                    lineNumbers: true,
+                    mode: "htmlmixed",
+                    tabSize: 4,
+                    indentWithTabs: true,
+                    autofocus: true
+                }
+            );
         })();
     </script>
 </body>
