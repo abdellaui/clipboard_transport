@@ -4,7 +4,6 @@ OS_NAME=linux; # supported: macos, linux
 
 
 killall clipboard_transport;
-pip install http.server;
 killall python3;
 cd $CURRENT_PATH/assets/out;
 
