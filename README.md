@@ -22,7 +22,7 @@ in such a confusing situation this script will make your day.
 change in `./run.sh` your `OS_NAME=linux # supported: macos, linux`.
 
 **for privileged computer:**
-just run: 
+just run:  `./run.sh` 
 
 **for restricted computer:**
 open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+R` manually.~~ it will refresh automatically, if it detects changes _(checks every 0.5 second)_
