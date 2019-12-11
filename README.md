@@ -30,7 +30,7 @@ open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+
 **information:** limitation on macOS: you need to put the application `clipboard_transport` to the foreground. more information click [here](https://doc.qt.io/qt-5/qclipboard.html#dataChanged).
 ## special information:
 
-under **linux** you can have an application for adding to the favorits by running:
+under **linux** you can have an application for adding that to the favorits by running:
 
 **please update the last line of `./Clipboard_Transport.desktop`**
 ```
