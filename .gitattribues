@@ -1,2 +1,2 @@
-assets/* linguist-vendored
-builds/* linguist-vendored
+assets/* linguist-generated=true
+binaries/* linguist-generated=true
