@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>clipboard transport</title>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.css">
     <style>
         html,
         body {
@@ -18,18 +16,6 @@
 
         img {
             max-width: 100%;
-            height: auto;
-        }
-
-        textarea#codeMirror {
-            min-width: 100%;
-            width: 100%;
-            min-height: 1000px;
-            height: 100%;
-        }
-
-        .CodeMirror {
-            border: 1px solid #eee;
             height: auto;
         }
 
@@ -46,14 +32,10 @@
 
 <body>
     <div class="content">
-        <textarea id="codeMirror"> Date.now();
-
-console.log('starting timer...');
-// expected output: starting timer...
-
-setTimeout(() => {
-  const millis = Date.now() - start;
-</textarea>
+        <center>
+            <a class="button" href="data:image/png;base64,1576069604.png" download="clipboard.png">download image</a>
+        </center>
+        <img src="img/1576069604.png" alt="loading">
     </div>
     <script>
         var remember = "";
@@ -81,15 +63,6 @@ setTimeout(() => {
 
         (function () {
             interval = window.setInterval(getdata, 1000);
-            CodeMirror.fromTextArea(document.getElementById("codeMirror"),
-                {
-                    lineNumbers: true,
-                    mode: "htmlmixed",
-                    tabSize: 4,
-                    indentWithTabs: true,
-                    autofocus: true
-                }
-            );
         })();
     </script>
 </body>

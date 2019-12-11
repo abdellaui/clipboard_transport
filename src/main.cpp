@@ -1,35 +1,39 @@
-#include <QGuiApplication>
-#include <QCoreApplication>
 #include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QGuiApplication>
 
-#include <QDebug>
 #include <QClipboard>
+#include <QDebug>
 #include "ClipboardManager.h"
 
+int main(int argc, char *argv[]) {
+  QGuiApplication app(argc, argv);
 
-int main(int argc, char* argv[])
-{
-    QGuiApplication app(argc, argv);
+  QCoreApplication::setApplicationName("clipboard transporter");
+  QCoreApplication::setApplicationVersion("1.0");
 
-    QCoreApplication::setApplicationName("clipboard transporter");
-    QCoreApplication::setApplicationVersion("1.0");
+  QCommandLineParser parser;
+  parser.setApplicationDescription("Test helper");
+  parser.addHelpOption();
+  parser.addVersionOption();
+  parser.addOption(
+      {{"i", "input"},
+       "directory of (templates) image.html, html.html, text.html.",
+       "input",
+       "~/playground/clipboard_transport/assets/in"});
+  parser.addOption({{"o", "output"},
+                    "path of output file.",
+                    "output",
+                    "~/playground/clipboard_transport/assets/out"});
+  parser.process(app);
 
+  QClipboard *clipboard = QGuiApplication::clipboard();
 
-    QCommandLineParser parser;
-    parser.setApplicationDescription("Test helper");
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addOption({{"i", "input"}, "directory of (templates) image.html, html.html, text.html.", "file"});
-    parser.addOption({{"o", "output"}, "path of output file.", "file"});
-    parser.process(app);
+  ClipboardManager *cm = new ClipboardManager(clipboard, parser);
 
+  QObject::connect(clipboard, &QClipboard::dataChanged, cm,
+                   &ClipboardManager::onClipboardDataChange);
 
-    QClipboard* clipboard = QGuiApplication::clipboard();
-
-    ClipboardManager* cm = new ClipboardManager(clipboard, parser);
-
-
-    QObject::connect(clipboard, &QClipboard::dataChanged, cm, &ClipboardManager::onClipboardDataChange);
-
-    return app.exec();
+  qInfo() << "I'm watching your clipboard!";
+  return app.exec();
 }

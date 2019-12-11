@@ -1,35 +1,32 @@
 #pragma once
-#include <QObject>
 #include <QClipboard>
 #include <QCommandLineParser>
 #include <QMap>
+#include <QMimeData>
+#include <QObject>
 
 typedef QList<QPair<QString, QString>> KeyValuePairs;
 
-enum ClipboardDataType
-{
-    IMAGE,
-    HTML,
-    TEXT
-};
+enum ClipboardDataType { IMAGE, HTML, TEXT };
 
-class ClipboardManager : public QObject
-{
-    Q_OBJECT
+class ClipboardManager : public QObject {
+  Q_OBJECT
 
-public:
-    ClipboardManager(const QClipboard*, const QCommandLineParser&);
+ public:
+  ClipboardManager(const QClipboard *, const QCommandLineParser &);
 
-public Q_SLOTS:
-    void onClipboardDataChange() const;
+ public Q_SLOTS:
+  void onClipboardDataChange() const;
 
-private:
-    const QClipboard* m_clipboard;
-    QString m_inputFile;
-    QString m_outputFile;
-    QMap<ClipboardDataType, QString> m_map;
+ private:
+  const QClipboard *m_clipboard;
+  QString m_inputFile;
+  QString m_outputFile;
+  QMap<ClipboardDataType, QString> m_map;
 
-    const QString encodeBase64Image(const QVariant) const;
-    void renderOutput(const ClipboardDataType, const QString) const;
-    const QString substituteTemplate(const QString, const KeyValuePairs&) const;
+  QString morphFile(QString) const;
+  const QString storeImage(const QMimeData *) const;
+  void renderOutput(const ClipboardDataType &, const QString &) const;
+  const QString substituteTemplate(const QString &,
+                                   const KeyValuePairs *) const;
 };
