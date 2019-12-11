@@ -31,7 +31,7 @@ open the url given by `./run.sh`. ~~for now, you need to refresh via `F5 / ctrl+
 
 **todos:**
 - [ ] automatically copying in clipboard via browser
-- [ ] add binaries for linux
+- [x] add binaries for linux
 - [ ] image: support different image formats (works only with png now)
 - [x] auto reload 
 - [x] add codemirror to data type `text`

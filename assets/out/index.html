@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>clipboard transport</title>
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.css">
     <style>
         html,
         body {
@@ -19,13 +17,6 @@
         img {
             max-width: 100%;
             height: auto;
-        }
-
-        textarea {
-            min-width: 100%;
-            width: 100%;
-            min-height: 600px;
-            height: 100%;
         }
 
         .content {
@@ -41,7 +32,45 @@
 
 <body>
     <div class="content">
-        <textarea id="codeMirror">CMakeLists.txt</textarea>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"><div id="answer-13354482" class="answer accepted-answer" data-answerid="13354482" itemprop="acceptedAnswer" itemscope="" itemtype="http://schema.org/Answer"><div class="post-layout"><div class="post-layout--right"><div id="comments-link-13354482" data-rep="50" data-anon="true"><a class="js-add-link comments-link disabled-link" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a>
+                
+            
+        </div>         
+    </div>    </div>
+</div>
+
+  
+<a name="12499670"></a>
+<div id="answer-12499670" class="answer" data-answerid="12499670" itemprop="suggestedAnswer" itemscope="" itemtype="http://schema.org/Answer">
+    <div class="post-layout">
+        <div class="votecell post-layout--left">
+            
+
+<div class="js-voting-container grid fd-column ai-stretch gs4 fc-black-200" data-post-id="12499670">
+        </div></div></div></div><div class="js-vote-count grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount" data-value="9">9</div>
+        <div class="votecell post-layout--left"><div class="js-voting-container grid fd-column ai-stretch gs4 fc-black-200" data-post-id="12499670">
+
+
+</div>
+
+        </div>
+
+        
+
+
+<div class="answercell post-layout--right">
+        
+    <div class="post-text" itemprop="text">
+<p>I'd say there's no simple way of doing it, where simple means <em>"just add 1-2 lines that will write the additional header and keep the existing functionality"</em>. So, the best solution would be to subclass the <code>SimpleHTTPRequestHandler</code> class and re-implement the functionality, with the addition of the new header.</p>
+
+<p>The problem behind why there is no simple way of doing this can be observed by looking at the implementation of the <code>SimpleHTTPRequestHandler</code> class in the Python library: <a href="http://hg.python.org/cpython/file/19c74cadea95/Lib/http/server.py#l654">http://hg.python.org/cpython/file/19c74cadea95/Lib/http/server.py#l654</a></p>
+
+<p>Notice the <code>send_head()</code> method, particularly the lines at the end of the method which send the response headers. Notice the invocation of the <code>end_headers()</code>
+ method. This method writes the headers to the output, together with a 
+blank line which signals the end of all headers and the start of the 
+response body: <a href="http://docs.python.org/py3k/library/http.server.html#http.server.BaseHTTPRequestHandler.end_headers">http://docs.python.org/py3k/library/http.server.html#http.server.BaseHTTPRequestHandler.end_headers</a></p>
+
+<p>Therefore, it would not be possible to subclass the <code>SimpleHTTPRequestHandler</code> handler, invoke the super-class <code>do_GET()</code> method, and then just add anoth</p></div></div>
     </div>
     <script>
         var remember = "";
@@ -55,7 +84,9 @@
         };
 
         var getdata = function () {
-            fetch(window.location.href, { mode: 'cors' }).then(data => {
+            // avoid caching
+            var url = window.location.protocol + "//" + window.location.hostname + "/?time=" + Date.now();
+            fetch(url, { mode: 'cors' }).then(data => {
                 data.text().then(text => {
                     check(text)
                 });
@@ -67,15 +98,6 @@
 
         (function () {
             interval = window.setInterval(getdata, 1000);
-            CodeMirror.fromTextArea(document.getElementById("codeMirror"),
-                {
-                    lineNumbers: true,
-                    mode: "htmlmixed",
-                    tabSize: 4,
-                    indentWithTabs: true,
-                    autofocus: true
-                }
-            );
         })();
     </script>
 </body>

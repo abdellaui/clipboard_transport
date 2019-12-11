@@ -46,7 +46,9 @@
         };
 
         var getdata = function () {
-            fetch(window.location.href, { mode: 'cors' }).then(data => {
+            // avoid caching
+            var url = window.location.protocol + "//" + window.location.hostname + "/?time=" + Date.now();
+            fetch(url, { mode: 'cors' }).then(data => {
                 data.text().then(text => {
                     check(text)
                 });
