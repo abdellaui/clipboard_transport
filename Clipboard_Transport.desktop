@@ -1,8 +1,9 @@
 [Desktop Entry]
-Terminal=false
-Type=Application
 Version=1.0
 Encoding=UTF-8
+StartupNotify=true
+Terminal=true
+Type=Application
 Name=ClipboardTransport
 Comment=ClipboardTransport
-Exec=/home/dwp7111/clipboard_transport/run.sh %F
+Exec=/home/dwp7111/clipboard_transport/run.sh %f
