@@ -10,16 +10,9 @@ include_directories(
     )
 
 
-set( INCS
-./include/ClipboardManager.h
-)
+FILE(GLOB INCS ./include/*.h)
 
-set( SRCS
-./src/ClipboardManager.cpp
-./src/main.cpp
-)
-
-
+FILE(GLOB SRCS ./src/*.cpp)
 
 find_package(Qt5 COMPONENTS Core Gui REQUIRED)
 

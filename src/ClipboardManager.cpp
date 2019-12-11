@@ -1,114 +1,89 @@
 #include "ClipboardManager.h"
 
-#include <QBuffer>
 #include <QClipboard>
 #include <QDateTime>
 #include <QDebug>
-#include <QDir>
-#include <QFile>
-#include <QImage>
 
+#include "FileManager.h"
 ClipboardManager::ClipboardManager(const QClipboard* cb,
-                                   const QCommandLineParser& parser) {
-  m_clipboard = cb;
-  m_inputFile = morphFile(parser.value("input"));
-  m_outputFile = morphFile(parser.value("output"));
+                                   const QCommandLineParser& parser)
+{
+    m_clipboard = cb;
 
-  QDir dir(m_outputFile + "/img/");
-  if (!dir.exists()) {
-    dir.mkpath(".");
-  }
+    m_outputFile = FileManager::morphFile(parser.value("output"));
+    FileManager::createPath(m_outputFile + "/img/");
 
-  m_map = QMap<ClipboardDataType, QString>{
-      {ClipboardDataType::IMAGE, readFileAll(m_inputFile + "/image.html")},
-      {ClipboardDataType::HTML, readFileAll(m_inputFile + "/html.html")},
-      {ClipboardDataType::TEXT, readFileAll(m_inputFile + "/text.html")},
-  };
+    QString inputFile = FileManager::morphFile(parser.value("input"));
+    m_templateMap = QMap<ClipboardDataType, QString>
+    {
+        {
+            ClipboardDataType::IMAGE,
+            FileManager::readFileAll(inputFile + "/image.html")
+        },
+        {
+            ClipboardDataType::HTML,
+            FileManager::readFileAll(inputFile + "/html.html")
+        },
+        {
+            ClipboardDataType::TEXT,
+            FileManager::readFileAll(inputFile + "/text.html")
+        },
+    };
+
+
 }
 
-void ClipboardManager::writeIntoFile(const QString& path,
-                                     const QString& data) const {
-  QFile file(path);
-  if (file.open(QIODevice::WriteOnly)) {
-    QTextStream fout(&file);
-    fout << data;
-  } else {
-    qInfo() << "couldnt save file: " << path;
-  }
-  file.close();
-}
+void ClipboardManager::onClipboardDataChange() const
+{
+    try
+    {
+        const QMimeData* mimeData = m_clipboard->mimeData(QClipboard::Clipboard);
+        if (mimeData != nullptr)
+        {
+            if (mimeData->hasImage())
+            {
+                QString imgFileName = FileManager::storeImage(m_outputFile, mimeData->formats(), mimeData->imageData());
+                renderOutput(ClipboardDataType::IMAGE, imgFileName);
+            }
+            else if (mimeData->hasHtml())
+            {
+                renderOutput(ClipboardDataType::HTML, mimeData->html());
+            }
+            else if (mimeData->hasText())
+            {
+                renderOutput(ClipboardDataType::TEXT, mimeData->text());
 
-QString ClipboardManager::readFileAll(const QString& path) const {
-  QFile file(path);
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return "";
-  return QString(file.readAll());
-}
+            }
+            else
+            {
+                qInfo() << "not allowed to share!";
+            }
+        }
 
-QString ClipboardManager::morphFile(QString path) const {
-  if (path.startsWith("~/")) path.replace(0, 1, QDir::homePath());
-  return path;
-}
-
-void ClipboardManager::onClipboardDataChange() const {
-  try {
-    const QMimeData* mimeData = m_clipboard->mimeData(QClipboard::Clipboard);
-    if (mimeData != nullptr) {
-      if (mimeData->hasImage()) {
-        renderOutput(ClipboardDataType::IMAGE,
-                     storeImage(mimeData->formats(), mimeData->imageData()));
-      } else if (mimeData->hasHtml()) {
-        renderOutput(ClipboardDataType::HTML, mimeData->html());
-      } else if (mimeData->hasText()) {
-        renderOutput(ClipboardDataType::TEXT, mimeData->text());
-
-      } else {
-        qInfo() << "not allowed to share!";
-      }
     }
-
-  } catch (...) {
-    qInfo() << "something went wrong!";
-  }
-}
-
-const QString ClipboardManager::storeImage(const QStringList formats,
-                                           const QVariant imageData) const {
-  QString searchWord = "image/";
-  QString fileName = QString::number(QDateTime::currentSecsSinceEpoch());
-  QString fileExtention = "png";
-
-  for (QString format : formats) {
-    if (format.startsWith(searchWord)) {
-      fileExtention = format.replace(searchWord, "");
-      break;
+    catch (...)
+    {
+        qInfo() << "something went wrong!";
     }
-  }
-
-  fileName = QString("%1.%2").arg(fileName).arg(fileExtention);
-  QString filePath = QString("%1/img/%2").arg(m_outputFile).arg(fileName);
-  QImage img = qvariant_cast<QImage>(imageData);
-  img.save(filePath, fileExtention.toStdString().c_str());
-
-  return fileName;
 }
 
 void ClipboardManager::renderOutput(const ClipboardDataType& mode,
-                                    const QString& data) const {
-  QString timestamp = QString::number(QDateTime::currentSecsSinceEpoch());
+                                    const QString& data) const
+{
+    QString timestamp = QString::number(QDateTime::currentSecsSinceEpoch());
 
-  KeyValuePairs subsitutionMap{{"$data", data}, {"$time", timestamp}};
-  writeIntoFile(m_outputFile + "/index.html",
-                substituteTemplate(mode, subsitutionMap));
-  writeIntoFile(m_outputFile + "/time.txt", timestamp);
-}
+    KeyValuePairs subsitutionMap
+    {
+        {"$data", data},
+        {"$time", timestamp}
+    };
 
-const QString ClipboardManager::substituteTemplate(
-    const ClipboardDataType& mode, const KeyValuePairs& subsitution) const {
-  QString templateString = m_map[mode];
+    QString templateString = m_templateMap[mode];
+    for (const auto& item : subsitutionMap)
+    {
+        templateString.replace(item.first, item.second);
+    }
 
-  for (const auto& item : subsitution) {
-    templateString.replace(item.first, item.second);
-  }
-
-  return templateString;
+    FileManager::writeIntoFile(m_outputFile + "/index.html", templateString);
+    FileManager::writeIntoFile(m_outputFile + "/time.txt", timestamp);
 }
