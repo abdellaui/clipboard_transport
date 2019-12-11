@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-CURRENT_PATH=$(pwd)
+#!/usr/bin/env bash
+CURRENT_PATH=$(dirname "${BASH_SOURCE[0]}")
 OS_NAME=linux; # supported: macos, linux
 
 
