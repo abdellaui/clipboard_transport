@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>clipboard transport</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.49.2/lib/codemirror.css">
     <style>
         html,
         body {
             margin: 0px;
-            background: #222;
+            background: #333;
             font-family: sans-serif;
         }
 
@@ -38,8 +39,9 @@
             padding: 15px;
             margin: 25px auto;
             background: #fff;
-            border: 1px solid #999;
+            border: 1px solid black;
             border-radius: 3px;
+            box-shadow: 0px 0px 20px black;
         }
     </style>
 </head>
@@ -60,7 +62,8 @@
 
         var getdata = function () {
             // avoid caching
-            var url = window.location.protocol + "//" + window.location.hostname + "/time.txt?time=" + Date.now();
+            var port = (window.location.port) ? ":" + window.location.port : "";
+            var url = window.location.protocol + "//" + window.location.hostname + port + "/time.txt?time=" + Date.now();
             fetch(url, { mode: 'cors' }).then(data => {
                 data.text().then(text => {
                     check(text)

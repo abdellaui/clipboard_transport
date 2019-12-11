@@ -1,9 +1,9 @@
+#include <QClipboard>
 #include <QCommandLineParser>
 #include <QCoreApplication>
+#include <QDebug>
 #include <QGuiApplication>
 
-#include <QClipboard>
-#include <QDebug>
 #include "ClipboardManager.h"
 
 int main(int argc, char *argv[]) {

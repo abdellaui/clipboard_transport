@@ -1,4 +1,5 @@
 #include "ClipboardManager.h"
+
 #include <QBuffer>
 #include <QClipboard>
 #include <QDateTime>
@@ -7,8 +8,8 @@
 #include <QFile>
 #include <QImage>
 
-ClipboardManager::ClipboardManager(const QClipboard *cb,
-                                   const QCommandLineParser &parser) {
+ClipboardManager::ClipboardManager(const QClipboard* cb,
+                                   const QCommandLineParser& parser) {
   m_clipboard = cb;
   m_inputFile = morphFile(parser.value("input"));
   m_outputFile = morphFile(parser.value("output"));
@@ -25,8 +26,8 @@ ClipboardManager::ClipboardManager(const QClipboard *cb,
   };
 }
 
-void ClipboardManager::writeIntoFile(const QString &path,
-                                     const QString &data) const {
+void ClipboardManager::writeIntoFile(const QString& path,
+                                     const QString& data) const {
   QFile file(path);
   if (file.open(QIODevice::WriteOnly)) {
     QTextStream fout(&file);
@@ -37,7 +38,7 @@ void ClipboardManager::writeIntoFile(const QString &path,
   file.close();
 }
 
-QString ClipboardManager::readFileAll(const QString &path) const {
+QString ClipboardManager::readFileAll(const QString& path) const {
   QFile file(path);
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return "";
   return QString(file.readAll());
@@ -50,7 +51,7 @@ QString ClipboardManager::morphFile(QString path) const {
 
 void ClipboardManager::onClipboardDataChange() const {
   try {
-    const QMimeData *mimeData = m_clipboard->mimeData(QClipboard::Clipboard);
+    const QMimeData* mimeData = m_clipboard->mimeData(QClipboard::Clipboard);
     if (mimeData != nullptr) {
       if (mimeData->hasImage()) {
         renderOutput(ClipboardDataType::IMAGE,
@@ -74,7 +75,7 @@ const QString ClipboardManager::storeImage(const QStringList formats,
                                            const QVariant imageData) const {
   QString searchWord = "image/";
   QString fileName = QString::number(QDateTime::currentSecsSinceEpoch());
-  QString fileExtention = "";
+  QString fileExtention = "png";
 
   for (QString format : formats) {
     if (format.startsWith(searchWord)) {
@@ -91,8 +92,8 @@ const QString ClipboardManager::storeImage(const QStringList formats,
   return fileName;
 }
 
-void ClipboardManager::renderOutput(const ClipboardDataType &mode,
-                                    const QString &data) const {
+void ClipboardManager::renderOutput(const ClipboardDataType& mode,
+                                    const QString& data) const {
   QString timestamp = QString::number(QDateTime::currentSecsSinceEpoch());
 
   KeyValuePairs subsitutionMap{{"$data", data}, {"$time", timestamp}};
@@ -102,10 +103,10 @@ void ClipboardManager::renderOutput(const ClipboardDataType &mode,
 }
 
 const QString ClipboardManager::substituteTemplate(
-    const ClipboardDataType &mode, const KeyValuePairs &subsitution) const {
+    const ClipboardDataType& mode, const KeyValuePairs& subsitution) const {
   QString templateString = m_map[mode];
 
-  for (const auto &item : subsitution) {
+  for (const auto& item : subsitution) {
     templateString.replace(item.first, item.second);
   }
 
