@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 CURRENT_PATH=$(realpath $(dirname $0))
-OS_NAME=macos; # supported: macos, linux
-HTTP_PORT=8083
+OS_NAME=linux; # supported: macos, linux
+HTTP_PORT=8082;
 
 killall clipboard_transport;
 killall python3;
