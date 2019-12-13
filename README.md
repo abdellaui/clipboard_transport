@@ -4,7 +4,7 @@
 assume your are working with 2 different computers in 2 different networks with one has root permissions and the other one is restricted as much as possible, like you **aren't** able:
 - to install your own applications
 - to visit websites for sharing content
-- to visit websites urls which tunnels to your localhost via e.g. `ngrok`
+- to call urls which tunnels to your localhost via e.g. `ngrok`
 
 in adition, you aren't able to configure your router to accept trafic from outsite. beside that, you only want to share your clipboard in one-way from high privileged computer to low privileged computer.
 
@@ -16,6 +16,9 @@ in such a confusing situation this script will make your day.
 - the c++ application will render predefined templates on clipboard change depending on the data type. difined in: `./assets/in/*`
 - the output will be exposed via simple http server to your localhost on port `8082`.
 - over `ssh.localhost.run` your localhost will be ssh tunneled to outsite with a generic url, so you will be able to connect with your second computer over this url
+
+## authentification
+change basic auth information under `run.sh`. per defaul your authentification data is `echo $(whoami):$(whoami)`
 
 ## usage
 **first of all:**
@@ -43,6 +46,7 @@ under **unix** based systems you can add it to your binaries by running:
 ```
 ln -s ~/clipboard_transport/run.sh /usr/local/bin/clipboard_transport -f
 ```
+
 **todos:**
 - [ ] automatically copying in clipboard via browser
 - [x] add binaries for linux
