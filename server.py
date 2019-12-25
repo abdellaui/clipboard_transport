@@ -42,10 +42,7 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-
-    project_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
-
     username = sys.argv[2] if len(sys.argv) > 2 else "admin"
     password = sys.argv[3] if len(sys.argv) > 3 else "password"
 

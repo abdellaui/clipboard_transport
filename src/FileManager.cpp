@@ -12,7 +12,6 @@ QString FileManager::storeImage(const QString& outputFilePrefix,
 {
     QString fileName = QString::number(QDateTime::currentSecsSinceEpoch());
     QString fileExtention = "png";
-
     QString searchWord = "image/";
 
     for (QString format : formats)
@@ -57,14 +56,18 @@ QString FileManager::readFileAll(const QString& path)
 {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
         return "";
+    }
     return QString(file.readAll());
 }
 
 QString FileManager::morphFile(QString path)
 {
     if (path.startsWith("~/"))
+    {
         path.replace(0, 1, QDir::homePath());
+    }
     return path;
 }
 

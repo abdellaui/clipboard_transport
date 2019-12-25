@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
     parser.setApplicationDescription("clipboard transporter: sharing over http");
     parser.addHelpOption();
     parser.addVersionOption();
-
     parser.addOption(
     {
         {"i", "input"},
@@ -25,7 +24,6 @@ int main(int argc, char* argv[])
         "input",
         "~/playground/clipboard_transport/assets/in"
     });
-
     parser.addOption(
     {
         {"o", "output"},
@@ -33,11 +31,9 @@ int main(int argc, char* argv[])
         "output",
         "~/playground/clipboard_transport/assets/out"
     });
-
     parser.process(app);
 
     QClipboard* clipboard = QGuiApplication::clipboard();
-
     ClipboardManager* cm = new ClipboardManager(clipboard, parser);
 
     QObject::connect(clipboard, &QClipboard::dataChanged, cm,

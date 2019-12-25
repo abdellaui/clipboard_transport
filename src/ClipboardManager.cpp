@@ -52,14 +52,12 @@ void ClipboardManager::onClipboardDataChange() const
             else if (mimeData->hasText())
             {
                 renderOutput(ClipboardDataType::TEXT, mimeData->text());
-
             }
             else
             {
                 qInfo() << "not allowed to share!";
             }
         }
-
     }
     catch (...)
     {
